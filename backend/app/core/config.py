@@ -18,23 +18,33 @@ class Settings(BaseSettings):
     PORT: int = 8000
     LOG_LEVEL: str = "INFO"
 
-    # CORS origins
-    ALLOWED_ORIGINS: List[str] = [
+    # CORS origins (supports '*' wildcard, comma-separated string, or JSON list)
+    ALLOWED_ORIGINS: Union[str, List[str]] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://localhost:8000",
         "http://127.0.0.1:8000",
     ]
 
-    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @field_validator("ALLOWED_ORIGINS", mode="after")
     @classmethod
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
         if isinstance(v, str):
+            v = v.strip()
             if v.startswith("[") and v.endswith("]"):
-                import json
-                return json.loads(v)
-            return [i.strip() for i in v.split(",") if i.strip()]
-        return v
+                try:
+                    import json
+                    parsed = json.loads(v)
+                    if isinstance(parsed, list):
+                        return [str(item).strip() for item in parsed if item]
+                except Exception:
+                    pass
+            if "," in v:
+                return [item.strip() for item in v.split(",") if item.strip()]
+            return [v] if v else ["*"]
+        elif isinstance(v, list):
+            return [str(item).strip() for item in v if item]
+        return ["*"]
 
     # Database
     DATABASE_URL: str = "sqlite:///./resq.db"
