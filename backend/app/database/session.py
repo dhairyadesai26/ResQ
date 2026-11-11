@@ -20,9 +20,17 @@ def sanitize_database_url(url: str) -> str:
 
     scheme, remainder = url.split("://", 1)
 
-    # Standardize postgres:// to postgresql:// for SQLAlchemy compatibility
-    if scheme == "postgres":
-        scheme = "postgresql"
+    # Standardize postgres:// to postgresql:// and detect available driver
+    if scheme in ("postgres", "postgresql"):
+        try:
+            import psycopg  # psycopg 3
+            scheme = "postgresql+psycopg"
+        except ImportError:
+            try:
+                import psycopg2  # psycopg 2
+                scheme = "postgresql+psycopg2"
+            except ImportError:
+                scheme = "postgresql"
 
     # If there is an '@' in the remainder, there is userinfo
     if "@" in remainder:
