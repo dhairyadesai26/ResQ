@@ -161,12 +161,11 @@ $$\text{Delay}(n) = \min\left(\text{initial\_delay} \times \text{multiplier}^n, 
 ---
 
 ## 18. Implementation Details
-The project is structured as a modular monorepo:
-- `backend/`: FastAPI application, database models, schemas, and routes.
-- `agent/`: Local Windows process supervisor, Win32 API interfaces, and recovery orchestrators.
-- `frontend/`: Next.js 14 App Router dashboard with responsive Tailwind CSS.
-- `test_apps/`: Authentic test applications for live OS demonstration (`worker_app.py`, `crasher_app.py`, `child_spawner.py`).
-- `scripts/`: Automated launch and benchmarking scripts.
+The project is structured into 4 clean, production-oriented directories:
+- `backend/`: FastAPI application, database models, schemas, and routes, along with the native Win32 process supervisor (`backend/agent/`) and authentic OS test applications (`backend/test_apps/`).
+- `frontend/`: Next.js 14 App Router dashboard with responsive Tailwind CSS light theme UI.
+- `docs/`: Academic documentation, formal IEEE research paper, presentation slides, viva defense guides, and architectural specifications.
+- `scripts/`: Automated launch launchers, test runner suites (`run_tests.py`), and empirical performance benchmark suites (`benchmark_performance.py`).
 
 ---
 

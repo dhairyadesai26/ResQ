@@ -154,13 +154,34 @@ python scripts/benchmark_performance.py
 
 ---
 
+## 🌐 Production Cloud & Edge Architecture
+
+ResQ Web supports both 100% local Windows execution and enterprise distributed hybrid deployment:
+
+| Layer | Platform | Role & Technology |
+| :--- | :--- | :--- |
+| **Frontend** | **Vercel** | Next.js 14 App Router, React, Tailwind CSS Light Theme, Global Edge CDN |
+| **Backend API** | **Render** | FastAPI ASGI Server (Uvicorn), Background Daemons, REST & WebSocket routes |
+| **Database** | **Supabase** | Managed PostgreSQL (AWS Mumbai) with PgBouncer connection pooling |
+| **Edge Supervisor** | **Local Windows Host** | Native Win32 Supervisor using `OpenProcess`, `WaitForSingleObject`, and Job Objects |
+
+### Hybrid Supervisor Topology
+Because cloud Linux servers (Render) cannot execute local Windows binaries directly, ResQ Web implements a distributed edge topology:
+1. The **Local Win32 Supervisor** runs on your Windows device, acquiring real OS handles for applications like `notepad.exe` or `C:\Program Files (x86)\UltraViewer\UltraViewer_Desktop.exe`.
+2. Telemetry, PIDs, exit codes, and crash events are persisted to the shared **Supabase PostgreSQL** database.
+3. The **Vercel Web Dashboard** visualizes the live state of your Windows machine in real time.
+
+For full step-by-step instructions, see the **[Production Deployment Guide](file:///c:/ResQ%20Web/docs/PRODUCTION_DEPLOYMENT_GUIDE.md)** or use the included [`render.yaml`](file:///c:/ResQ%20Web/render.yaml) blueprint.
+
+---
+
 ## 📂 Clean Codebase Structure (4 Core Folders)
 
 ```
 ResQ Web/
 ├── frontend/             # Next.js 14 (App Router), React, Tailwind CSS Light Theme UI
 ├── backend/              # FastAPI Server, Win32 Supervisor Agent & Test Applications
-│   ├── app/              # REST APIs, SQLite WAL Engine, WebSockets, and Schemas
+│   ├── app/              # REST APIs, PostgreSQL / SQLite WAL Engine, WebSockets, Schemas
 │   ├── agent/            # Native Win32 Supervisor (WaitForSingleObject, Job Objects, FSM)
 │   ├── test_apps/        # Authentic Test Applications (worker_app, crasher_app, etc.)
 │   ├── tests/            # API Integration Test Suite
@@ -168,6 +189,7 @@ ResQ Web/
 ├── docs/                 # Academic Documentation, Formal Reports & Deliverables
 │   ├── IEEE_RESEARCH_PAPER_RESQ_WEB.docx  # Formal IEEE Academic Research Paper
 │   ├── RESQ_WEB_PROJECT_PRESENTATION.pptx # 13-Slide IIIT Vadodara Viva Presentation
+│   ├── PRODUCTION_DEPLOYMENT_GUIDE.md     # Production Cloud Deployment Guide
 │   ├── format/           # Institutional IEEE & PPT Templates
 │   ├── PROJECT_REPORT.md # Comprehensive 26-Section Technical Report
 │   └── VIVA_DEMONSTRATION_GUIDE.md        # Demonstration Guide & 40+ Viva Q&As
@@ -180,12 +202,13 @@ ResQ Web/
 
 Comprehensive documentation is provided in the `docs/` directory:
 
-1. **[OS Concepts & Contributions](file:///c:/ResQ%20Web/docs/operating_systems/OS_CONCEPTS_AND_CONTRIBUTIONS.md):** In-depth technical analysis of all 17 Operating Systems concepts, handle tables, Job Objects, and code mappings.
-2. **[Viva & Demonstration Guide](file:///c:/ResQ%20Web/docs/VIVA_DEMONSTRATION_GUIDE.md):** 5-minute live demonstration script + 40+ technical viva questions and answers.
-3. **[Full Project Report](file:///c:/ResQ%20Web/docs/PROJECT_REPORT.md):** Formal 26-section B.Tech course project report.
-4. **[System Architecture](file:///c:/ResQ%20Web/docs/architecture/ARCHITECTURE.md):** Component diagrams, sequence charts, and database ER diagrams.
-5. **[REST & WebSocket API Specification](file:///c:/ResQ%20Web/docs/api/API_SPECIFICATION.md):** Full documentation of all HTTP and WebSocket contracts.
-6. **[Test & Evaluation Report](file:///c:/ResQ%20Web/docs/testing/TEST_AND_EVALUATION_REPORT.md):** Test matrix mapping T01–T25 to empirical results.
+1. **[Production Deployment Guide](file:///c:/ResQ%20Web/docs/PRODUCTION_DEPLOYMENT_GUIDE.md):** Complete guide for Vercel, Render, and Supabase deployment.
+2. **[OS Concepts & Contributions](file:///c:/ResQ%20Web/docs/operating_systems/OS_CONCEPTS_AND_CONTRIBUTIONS.md):** In-depth technical analysis of all 17 Operating Systems concepts, handle tables, Job Objects, and code mappings.
+3. **[Viva & Demonstration Guide](file:///c:/ResQ%20Web/docs/VIVA_DEMONSTRATION_GUIDE.md):** 5-minute live demonstration script + 40+ technical viva questions and answers.
+4. **[Full Project Report](file:///c:/ResQ%20Web/docs/PROJECT_REPORT.md):** Formal 26-section B.Tech course project report.
+5. **[System Architecture](file:///c:/ResQ%20Web/docs/architecture/ARCHITECTURE.md):** Component diagrams, sequence charts, and database ER diagrams.
+6. **[REST & WebSocket API Specification](file:///c:/ResQ%20Web/docs/api/API_SPECIFICATION.md):** Full documentation of all HTTP and WebSocket contracts.
+7. **[Test & Evaluation Report](file:///c:/ResQ%20Web/docs/testing/TEST_AND_EVALUATION_REPORT.md):** Test matrix mapping T01–T25 to empirical results.
 
 ---
 

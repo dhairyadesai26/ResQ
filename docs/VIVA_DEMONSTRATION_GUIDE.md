@@ -25,8 +25,8 @@ Follow this 5-minute live demonstration flow during the professor evaluation:
 
 ### Step 2: Register a Real Application
 1. Click **Register Application** in the top-right.
-2. Click the quick preset **+ Normal Worker**.
-3. Point out that the path points to `test_apps/worker_app.py` and the recovery policy is set to:
+2. Click the quick preset **+ Normal Worker** (or register a real Windows software like `notepad.exe` or `C:\Program Files (x86)\UltraViewer\UltraViewer_Desktop.exe`).
+3. Point out that the worker preset points to `backend/test_apps/worker_app.py` and the recovery policy is set to:
    - Max Retries: 3
    - Initial Delay: 1.0s
    - Multiplier: 2.0x
@@ -205,4 +205,21 @@ If consecutive retries reach `max_retries`, recovery ceases and the application 
 
 #### Q26: Does ResQ Web require Administrator privileges?
 **Answer:** No. ResQ Web adheres to the principle of least privilege. It operates with standard user privileges, managing processes belonging to the logged-in user. Administrator rights are only needed if supervising system-level Windows services.
+
+---
+
+### Cloud Architecture & Distributed Process Supervision
+
+#### Q27: Can ResQ Web supervise real third-party Windows software (e.g. UltraViewer, Notepad, Calculator)?
+**Answer:** Yes. Any valid executable path on the Windows file system (such as `notepad.exe` or `C:\Program Files (x86)\UltraViewer\UltraViewer_Desktop.exe`) can be registered and supervised. ResQ acquires a real Win32 process handle, monitors its lifecycle via `WaitForSingleObject`, and automatically relaunches the application if terminated unexpectedly.
+
+#### Q28: How does the distributed production architecture work with Vercel, Render, and Supabase?
+**Answer:** In production:
+1. **Frontend (Vercel):** Hosts the Next.js 14 web dashboard with global edge CDN caching.
+2. **Backend (Render):** Hosts the FastAPI service for REST APIs, background daemons, and real-time WebSocket distribution.
+3. **Database (Supabase):** Managed PostgreSQL database (AWS Mumbai) that centralizes application configurations, execution runs, metrics, and recovery audit trails.
+4. **Edge Supervisor (Local Windows Host):** Runs on the actual Windows machine, executing Win32 kernel hooks and streaming process state and telemetry into the cloud Supabase database and Vercel frontend.
+
+#### Q29: Why can a Linux cloud server (Render) not launch Windows `.exe` files directly without an edge agent?
+**Answer:** An OS process must be created by the OS kernel of the physical or virtual machine where the executable image exists. A cloud container running Ubuntu Linux has an ELF binary loader and no Win32 subsystem or access to a user's private Windows SSD. Therefore, following enterprise architecture (like Datadog or Kubernetes node agents), the supervisor agent runs locally on the Windows host while synchronizing state to the centralized cloud database.
 
