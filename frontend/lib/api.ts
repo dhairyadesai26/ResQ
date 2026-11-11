@@ -8,7 +8,25 @@ import {
   RecoveryAttemptItem,
 } from "@/types";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+export function resolveApiBase(): string {
+  let url = process.env.NEXT_PUBLIC_API_URL?.trim();
+
+  // If API_URL is missing but WS_URL is provided, derive API_URL
+  if (!url && process.env.NEXT_PUBLIC_WS_URL) {
+    url = process.env.NEXT_PUBLIC_WS_URL.trim()
+      .replace(/^wss:\/\//i, "https://")
+      .replace(/^ws:\/\//i, "http://")
+      .replace(/\/ws\/?$/i, "");
+  }
+
+  if (!url) {
+    return "http://127.0.0.1:8000";
+  }
+
+  return url.replace(/\/+$/, "");
+}
+
+const API_BASE = resolveApiBase();
 
 async function fetcher<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${endpoint}`, {

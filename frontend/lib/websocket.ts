@@ -4,19 +4,61 @@ import { useEffect, useState, useRef } from "react";
 
 type WebSocketListener = (data: any) => void;
 
+export function resolveWebSocketUrl(): string {
+  // 1. Try explicit NEXT_PUBLIC_WS_URL
+  let url = process.env.NEXT_PUBLIC_WS_URL?.trim();
+
+  // 2. If not found, try deriving from NEXT_PUBLIC_API_URL
+  if (!url) {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+    if (apiUrl) {
+      url = apiUrl
+        .replace(/^http:\/\//i, "ws://")
+        .replace(/^https:\/\//i, "wss://");
+    }
+  }
+
+  // 3. Fallback to local development if in local browser or SSR
+  if (!url) {
+    if (typeof window !== "undefined") {
+      if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+        console.warn(
+          "[ResQ Web] NEXT_PUBLIC_WS_URL or NEXT_PUBLIC_API_URL is missing. In Vercel, set NEXT_PUBLIC_API_URL and Redeploy."
+        );
+      }
+    }
+    return "ws://127.0.0.1:8000/ws";
+  }
+
+  // 4. Sanitize scheme: https -> wss, http -> ws
+  if (url.startsWith("https://")) {
+    url = "wss://" + url.slice(8);
+  } else if (url.startsWith("http://")) {
+    url = "ws://" + url.slice(7);
+  }
+
+  // 5. Ensure scheme is present
+  if (!url.startsWith("ws://") && !url.startsWith("wss://")) {
+    const isHttps = typeof window !== "undefined" ? window.location.protocol === "https:" : true;
+    url = (isHttps ? "wss://" : "ws://") + url;
+  }
+
+  // 6. Ensure trailing /ws endpoint
+  url = url.replace(/\/+$/, "");
+  if (!url.endsWith("/ws")) {
+    url = `${url}/ws`;
+  }
+
+  return url;
+}
+
 class WebSocketClient {
   private socket: WebSocket | null = null;
   private listeners: Set<WebSocketListener> = new Set();
   private reconnectTimeout: any = null;
   private pingInterval: any = null;
-  private url: string;
   public isConnected: boolean = false;
   private statusListeners: Set<(connected: boolean) => void> = new Set();
-
-  constructor() {
-    this.url =
-      process.env.NEXT_PUBLIC_WS_URL || "ws://127.0.0.1:8000/ws";
-  }
 
   public connect() {
     if (typeof window === "undefined") return;
@@ -24,10 +66,18 @@ class WebSocketClient {
       return;
     }
 
+    const currentUrl = resolveWebSocketUrl();
+    if (!currentUrl) {
+      this.notifyStatus(false);
+      return;
+    }
+
     try {
-      this.socket = new WebSocket(this.url);
+      console.log(`[ResQ Web WS] Connecting to: ${currentUrl}`);
+      this.socket = new WebSocket(currentUrl);
 
       this.socket.onopen = () => {
+        console.log(`[ResQ Web WS] Connected successfully to ${currentUrl}`);
         this.isConnected = true;
         this.notifyStatus(true);
         this.startPing();
@@ -40,7 +90,7 @@ class WebSocketClient {
             try {
               listener(payload);
             } catch (err) {
-              console.error("Error in WS message listener:", err);
+              console.error("[ResQ Web WS] Error in message listener:", err);
             }
           });
         } catch {
@@ -48,19 +98,24 @@ class WebSocketClient {
         }
       };
 
-      this.socket.onclose = () => {
+      this.socket.onclose = (event) => {
+        console.log(`[ResQ Web WS] Disconnected (code: ${event.code}, reason: "${event.reason || 'normal'}"). Scheduling reconnect...`);
         this.isConnected = false;
         this.notifyStatus(false);
         this.stopPing();
         this.scheduleReconnect();
       };
 
-      this.socket.onerror = () => {
+      this.socket.onerror = (err) => {
+        console.warn(`[ResQ Web WS] Error event on ${currentUrl}:`, err);
         if (this.socket) {
-          this.socket.close();
+          try {
+            this.socket.close();
+          } catch {}
         }
       };
-    } catch {
+    } catch (err) {
+      console.error(`[ResQ Web WS] Initialization exception for ${currentUrl}:`, err);
       this.scheduleReconnect();
     }
   }
@@ -70,7 +125,7 @@ class WebSocketClient {
     this.reconnectTimeout = setTimeout(() => {
       this.reconnectTimeout = null;
       this.connect();
-    }, 2500);
+    }, 3000);
   }
 
   private startPing() {

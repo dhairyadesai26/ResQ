@@ -101,7 +101,7 @@ export function Sidebar() {
                 isConnected ? "text-emerald-700 font-semibold" : "text-rose-600"
               )}
             >
-              {isConnected ? "Active (Port 8000)" : "Connecting..."}
+              {isConnected ? "Active (Live Sync)" : "Connecting..."}
             </span>
           </div>
         </div>
