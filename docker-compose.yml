@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.backend
+    container_name: resq-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - RESQ_HOST=0.0.0.0
+      - RESQ_PORT=8000
+      - DATABASE_URL=sqlite:///./resq.db
+      - RESQ_LOG_LEVEL=INFO
+    volumes:
+      - ./resq.db:/app/resq.db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../deployment/Dockerfile.frontend
+    container_name: resq-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws
+    depends_on:
+      - backend
+    restart: unless-stopped
+

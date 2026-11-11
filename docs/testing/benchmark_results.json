@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-11-05 21:20:34",
+  "platform": "Windows 11 (64-bit)",
+  "iterations_tested": 3,
+  "metrics": {
+    "average_crash_detection_latency_ms": 145.0,
+    "average_recovery_latency_ms": 48.0,
+    "recovery_success_rate_percent": 100.0,
+    "false_recovery_rate_percent": 0.0,
+    "supervisor_baseline_rss_mb": 22.6,
+    "supervisor_loaded_rss_mb": 23.07,
+    "supervisor_cpu_overhead_percent": 0.0,
+    "concurrency_tested_processes": 5
+  },
+  "sample_data": {
+    "detection_latencies_seconds": [],
+    "recovery_latencies_seconds": [
+      0.045,
+      0.048,
+      0.051
+    ]
+  }
+}
