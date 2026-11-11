@@ -15,9 +15,9 @@ from dataclasses import dataclass
 from typing import List, Optional
 import logging
 
-from agent.security.validator import ProcessSecurityValidator, SecurityValidationError
-from agent.process_manager.process_handle import ProcessHandle
-from agent.process_manager.job_object import JobObject
+from backend.agent.security.validator import ProcessSecurityValidator, SecurityValidationError
+from backend.agent.process_manager.process_handle import ProcessHandle
+from backend.agent.process_manager.job_object import JobObject
 
 logger = logging.getLogger("resq.agent.launcher")
 

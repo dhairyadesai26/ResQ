@@ -1,0 +1,26 @@
+# Render Infrastructure as Code Blueprint
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: resq-web-backend
+    env: python
+    region: singapore # Closest to Supabase ap-south-1 (Mumbai)
+    plan: free
+    branch: main
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/v1/system/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.10
+      - key: DATABASE_URL
+        value: postgresql://postgres.zrujkuahfrdgwjhlojcy:Nikhardh%4025@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
+      - key: ALLOWED_ORIGINS
+        value: "*"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: HOST
+        value: 0.0.0.0
+

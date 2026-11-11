@@ -43,7 +43,7 @@ from backend.app.api.v1.analytics import get_analytics_summary
 from backend.app.api.v1.system import health_check, get_system_information
 from fastapi import HTTPException
 
-WORKER_SCRIPT = os.path.join(WORKSPACE_ROOT, "test_apps", "worker_app.py")
+WORKER_SCRIPT = os.path.join(WORKSPACE_ROOT, "backend", "test_apps", "worker_app.py")
 
 
 class TestBackendAPIIntegration(unittest.TestCase):

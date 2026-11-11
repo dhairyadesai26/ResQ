@@ -13,7 +13,7 @@ from backend.app.database.session import SessionLocal
 from backend.app.models.event import Event
 from backend.app.schemas.event import EventResponse, EventFilterQuery
 from backend.app.websocket.connection_manager import ws_manager
-from agent.communication.event_emitter import SupervisorEvent, event_bus
+from backend.agent.communication.event_emitter import SupervisorEvent, event_bus
 
 
 class EventService:

@@ -25,7 +25,7 @@ def main():
 
     # Discover agent tests
     agent_suite = loader.discover(
-        start_dir=os.path.join(WORKSPACE_ROOT, "agent", "tests"),
+        start_dir=os.path.join(WORKSPACE_ROOT, "backend", "agent", "tests"),
         pattern="test_*.py",
     )
     suite.addTests(agent_suite)

@@ -21,11 +21,11 @@ WORKSPACE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if WORKSPACE_ROOT not in sys.path:
     sys.path.insert(0, WORKSPACE_ROOT)
 
-from agent.monitoring.monitor_engine import ProcessMonitorEngine
-from agent.recovery.policy_evaluator import RecoveryPolicyConfig
+from backend.agent.monitoring.monitor_engine import ProcessMonitorEngine
+from backend.agent.recovery.policy_evaluator import RecoveryPolicyConfig
 
-CRASHER_SCRIPT = os.path.join(WORKSPACE_ROOT, "test_apps", "crasher_app.py")
-WORKER_SCRIPT = os.path.join(WORKSPACE_ROOT, "test_apps", "worker_app.py")
+CRASHER_SCRIPT = os.path.join(WORKSPACE_ROOT, "backend", "test_apps", "crasher_app.py")
+WORKER_SCRIPT = os.path.join(WORKSPACE_ROOT, "backend", "test_apps", "worker_app.py")
 OUTPUT_PATH = os.path.join(WORKSPACE_ROOT, "docs", "testing", "benchmark_results.json")
 
 

@@ -11,7 +11,7 @@ import threading
 from typing import Callable, Optional
 import logging
 
-from agent.process_manager.launcher import LaunchedProcessInfo
+from backend.agent.process_manager.launcher import LaunchedProcessInfo
 
 logger = logging.getLogger("resq.agent.watcher")
 

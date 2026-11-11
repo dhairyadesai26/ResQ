@@ -17,8 +17,8 @@ from backend.app.models.recovery_attempt import RecoveryAttempt
 from backend.app.models.process_run import ProcessRun
 from backend.app.models.event import Event
 from backend.app.schemas.metrics import AnalyticsSummaryResponse
-from agent.process_manager.inspector import ProcessInspector
-from agent.monitoring.monitor_engine import monitor_engine
+from backend.agent.process_manager.inspector import ProcessInspector
+from backend.agent.monitoring.monitor_engine import monitor_engine
 
 
 class AnalyticsService:

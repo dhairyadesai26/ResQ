@@ -17,10 +17,10 @@ from backend.app.models.process_run import ProcessRun
 from backend.app.models.recovery_attempt import RecoveryAttempt
 from backend.app.schemas.application import ApplicationCreate, ApplicationUpdate
 from backend.app.websocket.connection_manager import ws_manager
-from agent.monitoring.monitor_engine import monitor_engine
-from agent.recovery.policy_evaluator import RecoveryPolicyConfig
-from agent.communication.event_emitter import event_bus, SupervisorEvent, EventType
-from agent.security.validator import ProcessSecurityValidator
+from backend.agent.monitoring.monitor_engine import monitor_engine
+from backend.agent.recovery.policy_evaluator import RecoveryPolicyConfig
+from backend.agent.communication.event_emitter import event_bus, SupervisorEvent, EventType
+from backend.agent.security.validator import ProcessSecurityValidator
 
 
 class ApplicationService:

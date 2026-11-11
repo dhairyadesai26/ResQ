@@ -10,7 +10,7 @@ from backend.app.database.session import get_db
 from backend.app.schemas.application import ApplicationCreate, ApplicationUpdate, ApplicationResponse
 from backend.app.services.application_service import ApplicationService
 from backend.app.models.process_run import ProcessRun
-from agent.security.validator import SecurityValidationError
+from backend.agent.security.validator import SecurityValidationError
 
 router = APIRouter(prefix="/applications", tags=["Applications"])
 

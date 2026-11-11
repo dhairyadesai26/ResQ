@@ -83,3 +83,8 @@ test-results/
 /logs/
 *.log
 
+# Office temp lock files & build caches
+~$*
+*.tsbuildinfo
+format/
+

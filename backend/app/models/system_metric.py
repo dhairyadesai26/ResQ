@@ -4,7 +4,7 @@ Tracks system-wide resource utilization over time for performance evaluation.
 """
 
 from datetime import datetime, timezone
-from sqlalchemy import Column, String, Integer, Float, DateTime
+from sqlalchemy import Column, String, Integer, BigInteger, Float, DateTime
 
 from backend.app.database.base import Base
 
@@ -14,8 +14,8 @@ class SystemMetric(Base):
 
     id = Column(String(36), primary_key=True, index=True)
     cpu_percent = Column(Float, nullable=False)
-    memory_used_bytes = Column(Integer, nullable=False)
-    memory_total_bytes = Column(Integer, nullable=False)
+    memory_used_bytes = Column(BigInteger, nullable=False)
+    memory_total_bytes = Column(BigInteger, nullable=False)
     memory_percent = Column(Float, nullable=False)
     managed_process_count = Column(Integer, default=0, nullable=False)
 

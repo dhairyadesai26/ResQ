@@ -12,10 +12,10 @@ import threading
 from typing import Callable, Dict, Optional
 import logging
 
-from agent.recovery.state_machine import ProcessState, ProcessStateMachine
-from agent.recovery.policy_evaluator import RecoveryPolicyEvaluator
-from agent.process_manager.launcher import ProcessLauncher, LaunchedProcessInfo
-from agent.communication.event_emitter import event_bus, SupervisorEvent, EventType
+from backend.agent.recovery.state_machine import ProcessState, ProcessStateMachine
+from backend.agent.recovery.policy_evaluator import RecoveryPolicyEvaluator
+from backend.agent.process_manager.launcher import ProcessLauncher, LaunchedProcessInfo
+from backend.agent.communication.event_emitter import event_bus, SupervisorEvent, EventType
 
 logger = logging.getLogger("resq.agent.recovery")
 

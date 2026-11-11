@@ -34,7 +34,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
       setFormData((prev) => ({
         ...prev,
         name: "Heartbeat Worker Service",
-        executable_path: "test_apps/worker_app.py",
+        executable_path: "backend/test_apps/worker_app.py",
         arguments: "BackgroundWorker 1.0",
         auto_recovery: true,
         max_retries: 3,
@@ -44,7 +44,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
       setFormData((prev) => ({
         ...prev,
         name: "Crash Test App (Exit 42)",
-        executable_path: "test_apps/crasher_app.py",
+        executable_path: "backend/test_apps/crasher_app.py",
         arguments: "--crash-after 4.0 --exit-code 42",
         auto_recovery: true,
         max_retries: 3,
@@ -177,7 +177,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
               required
               value={formData.executable_path}
               onChange={(e) => setFormData({ ...formData, executable_path: e.target.value })}
-              placeholder="e.g. test_apps/worker_app.py or notepad.exe"
+              placeholder="e.g. backend/test_apps/worker_app.py or notepad.exe"
               className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all font-mono text-[11px]"
             />
             <p className="mt-1 text-[11px] text-slate-500">

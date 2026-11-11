@@ -13,14 +13,14 @@ import threading
 from typing import Dict, List, Optional, Any
 import logging
 
-from agent.process_manager.launcher import ProcessLauncher, LaunchedProcessInfo
-from agent.process_manager.inspector import ProcessInspector, ProcessMetrics
-from agent.recovery.state_machine import ProcessState, ProcessStateMachine
-from agent.recovery.policy_evaluator import RecoveryPolicyEvaluator, RecoveryPolicyConfig
-from agent.recovery.recovery_orchestrator import RecoveryOrchestrator
-from agent.monitoring.watcher_thread import ProcessWatcherThread
-from agent.monitoring.termination_detector import ProcessTerminationDetector
-from agent.communication.event_emitter import event_bus, SupervisorEvent, EventType
+from backend.agent.process_manager.launcher import ProcessLauncher, LaunchedProcessInfo
+from backend.agent.process_manager.inspector import ProcessInspector, ProcessMetrics
+from backend.agent.recovery.state_machine import ProcessState, ProcessStateMachine
+from backend.agent.recovery.policy_evaluator import RecoveryPolicyEvaluator, RecoveryPolicyConfig
+from backend.agent.recovery.recovery_orchestrator import RecoveryOrchestrator
+from backend.agent.monitoring.watcher_thread import ProcessWatcherThread
+from backend.agent.monitoring.termination_detector import ProcessTerminationDetector
+from backend.agent.communication.event_emitter import event_bus, SupervisorEvent, EventType
 
 logger = logging.getLogger("resq.agent.engine")
 

@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: deployment/Dockerfile.backend
+      dockerfile: backend/deployment/Dockerfile.backend
     container_name: resq-backend
     ports:
       - "8000:8000"
@@ -20,7 +20,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: ../deployment/Dockerfile.frontend
+      dockerfile: ../backend/deployment/Dockerfile.frontend
     container_name: resq-frontend
     ports:
       - "3000:3000"

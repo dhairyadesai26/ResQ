@@ -5,7 +5,7 @@ Prevents handle leaks and ensures proper kernel resource release.
 """
 
 from typing import Optional
-from agent.process_manager.win32_api import (
+from backend.agent.process_manager.win32_api import (
     open_process_handle,
     close_process_handle,
     wait_for_process_handle,

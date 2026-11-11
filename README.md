@@ -154,6 +154,28 @@ python scripts/benchmark_performance.py
 
 ---
 
+## 📂 Clean Codebase Structure (4 Core Folders)
+
+```
+ResQ Web/
+├── frontend/             # Next.js 14 (App Router), React, Tailwind CSS Light Theme UI
+├── backend/              # FastAPI Server, Win32 Supervisor Agent & Test Applications
+│   ├── app/              # REST APIs, SQLite WAL Engine, WebSockets, and Schemas
+│   ├── agent/            # Native Win32 Supervisor (WaitForSingleObject, Job Objects, FSM)
+│   ├── test_apps/        # Authentic Test Applications (worker_app, crasher_app, etc.)
+│   ├── tests/            # API Integration Test Suite
+│   └── deployment/       # Dockerfiles & Deployment Specifications
+├── docs/                 # Academic Documentation, Formal Reports & Deliverables
+│   ├── IEEE_RESEARCH_PAPER_RESQ_WEB.docx  # Formal IEEE Academic Research Paper
+│   ├── RESQ_WEB_PROJECT_PRESENTATION.pptx # 13-Slide IIIT Vadodara Viva Presentation
+│   ├── format/           # Institutional IEEE & PPT Templates
+│   ├── PROJECT_REPORT.md # Comprehensive 26-Section Technical Report
+│   └── VIVA_DEMONSTRATION_GUIDE.md        # Demonstration Guide & 40+ Viva Q&As
+└── scripts/              # 1-Click Startup Launchers, Test Suites & Benchmarks
+```
+
+---
+
 ## 🎓 Academic Documentation & Viva Preparation
 
 Comprehensive documentation is provided in the `docs/` directory:

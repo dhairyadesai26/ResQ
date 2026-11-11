@@ -24,7 +24,7 @@ from backend.app.api.router import api_router
 from backend.app.websocket.connection_manager import ws_manager
 from backend.app.services.application_service import ApplicationService
 from backend.app.services.metrics_collector import metrics_collector
-from agent.monitoring.monitor_engine import monitor_engine
+from backend.agent.monitoring.monitor_engine import monitor_engine
 
 # Configure logging
 logging.basicConfig(
@@ -72,10 +72,11 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# CORS configuration
+# CORS configuration - supports exact origins and any Vercel deployment preview / production domain
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGINS,
+    allow_origin_regex=r"^https://.*\.vercel\.app$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -8,7 +8,7 @@ Demonstrates Windows Job Objects for process hierarchy control:
 
 from typing import Optional
 import logging
-from agent.process_manager.win32_api import (
+from backend.agent.process_manager.win32_api import (
     create_job_object_with_kill_on_close,
     assign_process_to_job_native,
     close_process_handle,

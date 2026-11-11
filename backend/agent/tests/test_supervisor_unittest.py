@@ -1,5 +1,5 @@
 """
-ResQ Web - Core Operating Systems & Process Supervisor Tests
+ResQ Web - Core Operating Systems & Process Supervisor Tests (Standard Library Unittest)
 Validates real Windows process management against formal test cases:
 T01 - Register valid executable
 T02 - Reject invalid executable path
@@ -26,25 +26,26 @@ import sys
 import time
 import unittest
 
-WORKSPACE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-if WORKSPACE_DIR not in sys.path:
-    sys.path.insert(0, WORKSPACE_DIR)
+# Ensure workspace root is in sys.path
+WORKSPACE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+if WORKSPACE_ROOT not in sys.path:
+    sys.path.insert(0, WORKSPACE_ROOT)
 
-from agent.security.validator import ProcessSecurityValidator, SecurityValidationError
-from agent.recovery.state_machine import ProcessState, ProcessStateMachine, InvalidStateTransitionError
-from agent.recovery.policy_evaluator import RecoveryPolicyEvaluator, RecoveryPolicyConfig
-from agent.process_manager.launcher import ProcessLauncher
-from agent.process_manager.inspector import ProcessInspector
-from agent.monitoring.monitor_engine import ProcessMonitorEngine
-from agent.monitoring.termination_detector import ProcessTerminationDetector
-from agent.communication.event_emitter import event_bus, EventType
-
-
-WORKER_SCRIPT = os.path.join(WORKSPACE_DIR, "test_apps", "worker_app.py")
-CRASHER_SCRIPT = os.path.join(WORKSPACE_DIR, "test_apps", "crasher_app.py")
+from backend.agent.security.validator import ProcessSecurityValidator, SecurityValidationError
+from backend.agent.recovery.state_machine import ProcessState, ProcessStateMachine, InvalidStateTransitionError
+from backend.agent.recovery.policy_evaluator import RecoveryPolicyEvaluator, RecoveryPolicyConfig
+from backend.agent.process_manager.launcher import ProcessLauncher
+from backend.agent.process_manager.inspector import ProcessInspector
+from backend.agent.monitoring.monitor_engine import ProcessMonitorEngine
+from backend.agent.monitoring.termination_detector import ProcessTerminationDetector
+from backend.agent.communication.event_emitter import event_bus, EventType
 
 
-class TestCoreSupervisorMechanisms(unittest.TestCase):
+WORKER_SCRIPT = os.path.join(WORKSPACE_ROOT, "backend", "test_apps", "worker_app.py")
+CRASHER_SCRIPT = os.path.join(WORKSPACE_ROOT, "backend", "test_apps", "crasher_app.py")
+
+
+class TestProcessSupervisorCore(unittest.TestCase):
 
     def test_t01_register_valid_executable(self):
         """T01: Register a valid executable path."""
@@ -83,13 +84,13 @@ class TestCoreSupervisorMechanisms(unittest.TestCase):
         T05: Display running state and metrics
         """
         engine = ProcessMonitorEngine()
-        app_id = "test_app_worker_core_1"
+        app_id = "test_app_worker_1"
 
         engine.register_application(
             app_id=app_id,
-            name="WorkerAppCore",
+            name="WorkerApp",
             executable_path=WORKER_SCRIPT,
-            arguments=["WorkerCore1", "0.5"],
+            arguments=["Worker1", "0.5"],
         )
 
         success = engine.start_application(app_id)
@@ -115,13 +116,13 @@ class TestCoreSupervisorMechanisms(unittest.TestCase):
         T07: Verify expected stop does not trigger automatic recovery
         """
         engine = ProcessMonitorEngine()
-        app_id = "test_app_controlled_stop_core"
+        app_id = "test_app_controlled_stop"
 
         engine.register_application(
             app_id=app_id,
-            name="WorkerControlledCore",
+            name="WorkerControlled",
             executable_path=WORKER_SCRIPT,
-            arguments=["ControlledCore", "0.5"],
+            arguments=["Controlled", "0.5"],
             policy_config=RecoveryPolicyConfig(enabled=True, max_retries=3, initial_delay_seconds=0.5),
         )
 
@@ -148,11 +149,11 @@ class TestCoreSupervisorMechanisms(unittest.TestCase):
         T13: Verify new PID differs from original
         """
         engine = ProcessMonitorEngine()
-        app_id = "test_app_crasher_recovery_core"
+        app_id = "test_app_crasher_recovery"
 
         engine.register_application(
             app_id=app_id,
-            name="CrasherWithRecoveryCore",
+            name="CrasherWithRecovery",
             executable_path=CRASHER_SCRIPT,
             arguments=["--crash-after", "1.2", "--exit-code", "42"],
             policy_config=RecoveryPolicyConfig(
@@ -239,20 +240,20 @@ class TestCoreSupervisorMechanisms(unittest.TestCase):
         """T16: Test multiple simultaneously monitored applications."""
         engine = ProcessMonitorEngine()
 
-        app1_id = "concurrent_app_core_1"
-        app2_id = "concurrent_app_core_2"
+        app1_id = "concurrent_app_1"
+        app2_id = "concurrent_app_2"
 
         engine.register_application(
             app_id=app1_id,
-            name="ConcurrentWorkerCore1",
+            name="ConcurrentWorker1",
             executable_path=WORKER_SCRIPT,
-            arguments=["ConcCore1", "0.5"],
+            arguments=["Conc1", "0.5"],
         )
         engine.register_application(
             app_id=app2_id,
-            name="ConcurrentWorkerCore2",
+            name="ConcurrentWorker2",
             executable_path=WORKER_SCRIPT,
-            arguments=["ConcCore2", "0.5"],
+            arguments=["Conc2", "0.5"],
         )
 
         self.assertTrue(engine.start_application(app1_id))
@@ -284,3 +285,4 @@ class TestCoreSupervisorMechanisms(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

@@ -16,8 +16,8 @@ import logging
 from backend.app.database.session import SessionLocal
 from backend.app.models.system_metric import SystemMetric
 from backend.app.websocket.connection_manager import ws_manager
-from agent.process_manager.inspector import ProcessInspector
-from agent.monitoring.monitor_engine import monitor_engine
+from backend.agent.process_manager.inspector import ProcessInspector
+from backend.agent.monitoring.monitor_engine import monitor_engine
 
 logger = logging.getLogger("resq.backend.metrics")
 

@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session
 from backend.app.database.session import get_db
 from backend.app.schemas.metrics import SystemMetricResponse
 from backend.app.models.system_metric import SystemMetric
-from agent.process_manager.inspector import ProcessInspector
-from agent.monitoring.monitor_engine import monitor_engine
+from backend.agent.process_manager.inspector import ProcessInspector
+from backend.agent.monitoring.monitor_engine import monitor_engine
 
 router = APIRouter(prefix="/metrics", tags=["System Metrics"])
 

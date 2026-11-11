@@ -9,8 +9,8 @@ Prevents race conditions between stop requests and termination events.
 from typing import Optional, Dict, Any
 import logging
 
-from agent.recovery.state_machine import ProcessState, ProcessStateMachine
-from agent.communication.event_emitter import event_bus, SupervisorEvent, EventType
+from backend.agent.recovery.state_machine import ProcessState, ProcessStateMachine
+from backend.agent.communication.event_emitter import event_bus, SupervisorEvent, EventType
 
 logger = logging.getLogger("resq.agent.detector")
 

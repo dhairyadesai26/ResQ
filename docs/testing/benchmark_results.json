@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-05 21:20:34",
+  "timestamp": "2026-11-11 13:32:30",
   "platform": "Windows 11 (64-bit)",
   "iterations_tested": 3,
   "metrics": {
@@ -7,8 +7,8 @@
     "average_recovery_latency_ms": 48.0,
     "recovery_success_rate_percent": 100.0,
     "false_recovery_rate_percent": 0.0,
-    "supervisor_baseline_rss_mb": 22.6,
-    "supervisor_loaded_rss_mb": 23.07,
+    "supervisor_baseline_rss_mb": 22.52,
+    "supervisor_loaded_rss_mb": 22.99,
     "supervisor_cpu_overhead_percent": 0.0,
     "concurrency_tested_processes": 5
   },
